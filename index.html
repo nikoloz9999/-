@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>გამოიცანი საქართველოს შესახებ კითხვები</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- კუთხის ღილაკი დროის ასარჩევად -->
+    <button id="corner-time-btn" onclick="openTimeModal()">⏱️ დრო</button>
+
+    <!-- დროის ასარჩევი ფანჯარა (მოდალი) -->
+    <div id="time-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeTimeModal()">&times;</span>
+            <h3>⏱️ აირჩიეთ თამაშის დრო</h3>
+            <p class="modal-sub">რამდენ წამში ან წუთში გსურთ 100 კითხვაზე პასუხი?</p>
+            <div class="time-options">
+                <button class="time-opt-btn" onclick="startTimedGame(30)">30 წამი</button>
+                <button class="time-opt-btn" onclick="startTimedGame(60)">1 წუთი</button>
+                <button class="time-opt-btn" onclick="startTimedGame(120)">2 წუთი</button>
+                <button class="time-opt-btn" onclick="startTimedGame(300)">5 წუთი</button>
+                <button class="time-opt-btn unlimited" onclick="startTimedGame(0)">ულიმიტო (დროის გარეშე)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="parchment-container">
+        <div class="ornament-bar">❖ ❖ ❖ საქართველოს ისტორია, კულტურა და ბუნება ❖ ❖ ❖</div>
+
+        <header>
+            <div class="stats-bar">
+                <span>კითხვა: <strong id="q-progress">1 / 100</strong></span>
+                <span id="timer-box" class="timer-badge hidden">⏳ <strong id="timer-display">00:00</strong></span>
+                <button id="music-btn" onclick="toggleCalmMusic()">🔇 მშვიდი მუსიკა</button>
+                <span>ქულა: <strong id="score">0</strong></span>
+            </div>
+        </header>
+
+        <main id="quiz-screen">
+            <div class="iakob-section">
+                <div class="iakob-avatar">
+                    <svg viewBox="0 0 120 120" class="portrait-svg">
+                        <circle cx="60" cy="60" r="56" fill="#faedcd" stroke="#8b2635" stroke-width="4"/>
+                        <path d="M22 112 C25 82, 95 82, 98 112 Z" fill="#3d1e16"/>
+                        <path d="M48 85 L60 112 L72 85 Z" fill="#fffdf9"/>
+                        <rect x="33" y="92" width="4" height="12" rx="1" fill="#d4a373"/>
+                        <rect x="39" y="92" width="4" height="12" rx="1" fill="#d4a373"/>
+                        <rect x="77" y="92" width="4" height="12" rx="1" fill="#d4a373"/>
+                        <rect x="83" y="92" width="4" height="12" rx="1" fill="#d4a373"/>
+                        <ellipse cx="60" cy="54" rx="20" ry="25" fill="#f3d5b5"/>
+                        <path d="M39 50 C38 25, 82 25, 81 50 C78 35, 42 35, 39 50 Z" fill="#e5e5e5"/>
+                        <path d="M47 47 Q52 44 56 47" stroke="#6c757d" stroke-width="2" fill="none"/>
+                        <path d="M64 47 Q68 44 73 47" stroke="#6c757d" stroke-width="2" fill="none"/>
+                        <circle cx="52" cy="51" r="2.2" fill="#2b2d42"/>
+                        <circle cx="68" cy="51" r="2.2" fill="#2b2d42"/>
+                        <path d="M60 51 L58 61 L62 61" stroke="#c9a27e" stroke-width="2" fill="none"/>
+                        <path d="M45 66 Q60 61 75 66 Q68 72 60 68 Q52 72 45 66 Z" fill="#ffffff"/>
+                        <path d="M41 62 C40 86, 80 86, 79 62 C74 78, 46 78, 41 62 Z" fill="#f8f9fa"/>
+                    </svg>
+                    <span class="iakob-name">იაკობ გოგებაშვილი</span>
+                </div>
+
+                <div class="speech-bubble" id="iakob-speech">
+                    <span class="category-tag" id="category-badge">ისტორია</span>
+                    <p id="question-text">კითხვა იტვირთება...</p>
+                </div>
+            </div>
+
+            <div class="answers-list" id="answers-container">
+                <button class="answer-btn" id="btn-0" onclick="selectAnswer(0)">
+                    <span class="letter-badge">ა)</span>
+                    <span class="answer-text" id="ans-0">პასუხი 1</span>
+                </button>
+                <button class="answer-btn" id="btn-1" onclick="selectAnswer(1)">
+                    <span class="letter-badge">ბ)</span>
+                    <span class="answer-text" id="ans-1">პასუხი 2</span>
+                </button>
+                <button class="answer-btn" id="btn-2" onclick="selectAnswer(2)">
+                    <span class="letter-badge">გ)</span>
+                    <span class="answer-text" id="ans-2">პასუხი 3</span>
+                </button>
+            </div>
+
+            <div class="controls">
+                <button id="next-btn" class="hidden" onclick="nextQuestion()">შემდეგი კითხვა ➡️</button>
+            </div>
+        </main>
+
+        <section id="end-screen" class="hidden">
+            <div class="end-card">
+                <h2 id="end-title">🎓 ვიქტორინა დასრულდა!</h2>
+                <p id="iakob-final-words" class="final-quote"></p>
+                <div class="final-score-box">
+                    თქვენ გამოიცანით: <strong id="final-score">0</strong> / 100
+                </div>
+                <button class="restart-btn" onclick="restartQuiz()">თავიდან დაწყება 🔄</button>
+            </div>
+        </section>
+
+        <div class="ornament-bar bottom">❖ ❖ ❖ დედაენა — ცოდნის ლამპარი ❖ ❖ ❖</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
